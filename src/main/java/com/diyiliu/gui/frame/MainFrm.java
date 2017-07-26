@@ -34,18 +34,18 @@ public class MainFrm extends JFrame implements ActionListener, KeyListener {
     private JButton btClear;
     private JButton btSave;
     private JPanel plContainer;
+    private JButton btHome;
+    private JButton btSearch;
+    private JButton btMember;
+    private JButton btSet;
+    private JButton btStats;
+    private JButton btLock;
     private JTable tbStock;
     private JComboBox cbName;
     private JButton btUpdate;
     private JButton btUp;
     private JButton btDown;
     private JToolBar toolBar;
-    private JButton btSearch;
-    private JButton btMember;
-    private JButton btSet;
-    private JButton btLock;
-    private JButton btHome;
-    private JButton btStats;
     private JButton btPrint;
     private JTextField tfName;
 
@@ -81,9 +81,7 @@ public class MainFrm extends JFrame implements ActionListener, KeyListener {
         btClear.addActionListener(this);
         btClear.setActionCommand("clear");
 
-
         tfPrice.addKeyListener(this);
-
         tbStock.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -99,7 +97,7 @@ public class MainFrm extends JFrame implements ActionListener, KeyListener {
         tfName.addKeyListener(new MemberPrompt(cbName, stockModel));
 
         this.setIconImage(new ImageIcon(ClassLoader.getSystemResource("image/主页.png")).getImage());
-        this.setSize(800, 658);
+        this.setSize(800, 668);
         // 设置窗口居中
         UIHelper.setCenter(this);
         this.setResizable(false);
