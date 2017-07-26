@@ -37,6 +37,16 @@ public class MainFrm extends JFrame implements ActionListener, KeyListener {
     private JTable tbStock;
     private JComboBox cbName;
     private JButton btUpdate;
+    private JButton btUp;
+    private JButton btDown;
+    private JToolBar toolBar;
+    private JButton btSearch;
+    private JButton btMember;
+    private JButton btSet;
+    private JButton btLock;
+    private JButton btHome;
+    private JButton btStats;
+    private JButton btPrint;
     private JTextField tfName;
 
     private StockModel stockModel;
@@ -44,6 +54,8 @@ public class MainFrm extends JFrame implements ActionListener, KeyListener {
     public MainFrm() {
 
         this.setContentPane(plContainer);
+
+        toolBar.setFloatable(false);
 
         cbName.setEditable(true);
         cbName.setUI(new BasicComboBoxUI() {
@@ -86,7 +98,8 @@ public class MainFrm extends JFrame implements ActionListener, KeyListener {
         tfName = (JTextField) cbName.getEditor().getEditorComponent();
         tfName.addKeyListener(new MemberPrompt(cbName, stockModel));
 
-        this.setSize(800, 520);
+        this.setIconImage(new ImageIcon(ClassLoader.getSystemResource("image/主页.png")).getImage());
+        this.setSize(800, 658);
         // 设置窗口居中
         UIHelper.setCenter(this);
         this.setResizable(false);

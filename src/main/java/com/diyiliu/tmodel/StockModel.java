@@ -34,7 +34,7 @@ public class StockModel extends AbstractTableModel {
             " FROM" +
             " stock t" +
             " INNER JOIN member m ON m.ID = t.MEMBER_ID" +
-            " ORDER BY t.CREATE_TIME DESC";
+            " ORDER BY t.CREATE_TIME DESC limit 0,30";
 
     public StockModel(){
         refresh();
