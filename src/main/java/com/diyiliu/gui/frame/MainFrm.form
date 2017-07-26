@@ -61,6 +61,16 @@
               <toolTipText value=""/>
             </properties>
           </component>
+          <hspacer id="5d6a">
+            <constraints/>
+          </hspacer>
+          <component id="3b115" class="javax.swing.JButton" binding="btPrint">
+            <constraints/>
+            <properties>
+              <icon value="image/打印机.png"/>
+              <text value="打印"/>
+            </properties>
+          </component>
         </children>
       </toolbar>
       <grid id="3e3d5" layout-manager="GridLayoutManager" row-count="3" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
