@@ -16,6 +16,8 @@ import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicComboBoxUI;
+import javax.swing.table.DefaultTableCellRenderer;
+import java.awt.*;
 import java.awt.event.*;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -51,9 +53,15 @@ public class MainFrm extends JFrame implements ActionListener, KeyListener {
 
     private StockModel stockModel;
 
+    private JLabel lbPaid, lbDebt;
     public MainFrm() {
-
         this.setContentPane(plContainer);
+
+        lbPaid = new JLabel(new ImageIcon(ClassLoader.getSystemResource("image/approval.png")));
+        lbPaid.setToolTipText("结清");
+
+        lbDebt = new JLabel(new ImageIcon(ClassLoader.getSystemResource("image/coin-yen.png")));
+        lbDebt.setToolTipText("欠款");
 
         toolBar.setFloatable(false);
 
@@ -68,6 +76,43 @@ public class MainFrm extends JFrame implements ActionListener, KeyListener {
 
         stockModel = new StockModel();
         tbStock.setModel(stockModel);
+
+        DefaultTableCellRenderer cellRenderer = new DefaultTableCellRenderer() {
+            @Override
+            protected void setValue(Object value) {
+               /* if (value == null || StringUtils.isEmpty(value.toString())) {
+
+                    setText("");
+                } else {
+                    if (value.equals(Constants.StockState.DEBT.getName())) {
+                        setForeground(Color.RED);
+                        setText(value.toString());
+                    } else if (value.equals(Constants.StockState.PAID.getName())) {
+                        setForeground(Color.BLACK);
+                        setText(value.toString());
+                    }
+                }*/
+            }
+
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+
+                if (column == 8){
+                    if(value == null || StringUtils.isEmpty(value.toString())){
+
+                        return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                    }else if (value.equals(Constants.StockState.PAID.getName())){
+                        return lbPaid;
+                    }else if (value.equals(Constants.StockState.DEBT.getName())) {
+                        return lbDebt;
+                    }
+                }
+
+                return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+            }
+        };
+        tbStock.getColumn("状态").setCellRenderer(cellRenderer);
+
 
         tbStock.getColumnModel().getColumn(0).setPreferredWidth(125);
 
@@ -85,7 +130,7 @@ public class MainFrm extends JFrame implements ActionListener, KeyListener {
         tbStock.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 2){
+                if (e.getClickCount() == 2) {
                     StockUpdateDlg updateDlg = new StockUpdateDlg();
                     toUpdate(updateDlg, false);
                 }
@@ -125,13 +170,13 @@ public class MainFrm extends JFrame implements ActionListener, KeyListener {
             tfPrice.setText("");
 
             stockModel.refresh();
-        }else if ("update".equals(e.getActionCommand())){
+        } else if ("update".equals(e.getActionCommand())) {
 
             int count = tbStock.getSelectedRowCount();
-            if (count == 1){
+            if (count == 1) {
                 StockUpdateDlg updateDlg = new StockUpdateDlg();
                 toUpdate(updateDlg, true);
-            }else {
+            } else {
 
                 JOptionPane.showMessageDialog(this, "请选择一条需要修改的信息!", "提示", JOptionPane.WARNING_MESSAGE);
             }
@@ -199,7 +244,7 @@ public class MainFrm extends JFrame implements ActionListener, KeyListener {
             if (result == 1) {
                 JOptionPane.showMessageDialog(this, "操作成功!", "入库提醒", JOptionPane.INFORMATION_MESSAGE);
 
-                 sql = "SELECT t.IN_NO,m.`NAME`,t.GROSS,t.TARE,t.SUTTLE,t.PRICE,t.MONEY,t.CREATE_TIME,t.STATE from stock t " +
+                sql = "SELECT t.IN_NO,m.`NAME`,t.GROSS,t.TARE,t.SUTTLE,t.PRICE,t.MONEY,t.CREATE_TIME,t.STATE from stock t " +
                         "INNER JOIN member m on m.ID = t.MEMBER_ID and m.`NAME`=?";
 
                 stockModel.refresh(sql, name);
@@ -211,7 +256,7 @@ public class MainFrm extends JFrame implements ActionListener, KeyListener {
     }
 
 
-    private void toUpdate(StockUpdateDlg updateDlg, Boolean isSuper){
+    private void toUpdate(StockUpdateDlg updateDlg, Boolean isSuper) {
         int row = tbStock.getSelectedRow();
         Object[] data = stockModel.getRowData(row);
         String name = (String) data[1];
@@ -228,17 +273,17 @@ public class MainFrm extends JFrame implements ActionListener, KeyListener {
         stock.setInNo((String) data[0]);
         stock.setMember(member);
         stock.setGross((Integer) data[2]);
-        stock.setTare(data[3] == null? null: (Integer) data[3]);
-        stock.setSuttle(data[4] == null? null: (Integer) data[4]);
+        stock.setTare(data[3] == null ? null : (Integer) data[3]);
+        stock.setSuttle(data[4] == null ? null : (Integer) data[4]);
         stock.setPrice(new BigDecimal(String.valueOf(data[5])));
-        stock.setMoney(data[6] == null? null: new BigDecimal(String.valueOf(data[6])));
+        stock.setMoney(data[6] == null ? null : new BigDecimal(String.valueOf(data[6])));
         stock.setCreateTime((Date) data[7]);
 
-        if (data[3] == null){
+        if (data[3] == null) {
             updateDlg.getTfTare().setEditable(true);
             updateDlg.getCbxState().setEnabled(false);
             updateDlg.getTfTare().grabFocus();
-        }else {
+        } else {
             updateDlg.getCbxState().grabFocus();
         }
 
@@ -246,7 +291,7 @@ public class MainFrm extends JFrame implements ActionListener, KeyListener {
             stock.setState((Integer) data[8]);
         }
 
-        if (isSuper){
+        if (isSuper) {
 
             updateDlg.getTfGross().setEditable(true);
             updateDlg.getTfTare().setEditable(true);
@@ -257,12 +302,11 @@ public class MainFrm extends JFrame implements ActionListener, KeyListener {
 
         updateDlg.setVisible(true);
 
-        if (StringUtils.isNotBlank(tfName.getText()))
-        {
+        if (StringUtils.isNotBlank(tfName.getText())) {
             String sql = "SELECT t.IN_NO,m.`NAME`,t.GROSS,t.TARE,t.SUTTLE,t.PRICE,t.MONEY,t.CREATE_TIME,t.STATE from stock t " +
                     "INNER JOIN member m on m.ID = t.MEMBER_ID and m.`NAME`=?";
             stockModel.refresh(sql, tfName.getText().trim());
-        }else {
+        } else {
 
             stockModel.refresh();
         }

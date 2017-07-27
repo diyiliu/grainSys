@@ -15,6 +15,7 @@ public class TestFormat {
 
         Date d = new Date();
 
+        System.out.println(d);
         String s = String.format("%1$tm/%1$td %1$tR", d);
 
         System.out.println(s);

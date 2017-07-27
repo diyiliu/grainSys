@@ -17,6 +17,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Date;
 
 public class StockUpdateDlg extends JDialog {
     private JPanel contentPane;
@@ -33,6 +35,7 @@ public class StockUpdateDlg extends JDialog {
     private JTextField tfTime;
     private String inNo;
 
+    private boolean newStock = true;
     public StockUpdateDlg() {
         this.setTitle("入库");
 
@@ -134,10 +137,9 @@ public class StockUpdateDlg extends JDialog {
                 money = Double.valueOf(tfMoney.getText());
             }
 
-            String sql;
+            /*String sql;
             Object[] values;
             if (StringUtils.isNotBlank(tfTare.getText()) && cbxState.getSelectedIndex() > -1) {
-
                 Constants.StockState stockState = (Constants.StockState) cbxState.getSelectedItem();
                 sql = "update stock set gross=?, tare=?, suttle=?, price=?, money=?, state=? where in_no=?";
                 values = new Object[]{tfGross.getText(), tare, suttle,
@@ -146,9 +148,39 @@ public class StockUpdateDlg extends JDialog {
                 sql = "update stock set gross=?, tare=?, suttle=?, price=?, money=? where in_no=?";
                 values = new Object[]{tfGross.getText(), tare, suttle,
                         tfPrice.getText(), money, inNo};
+            }*/
+
+            StringBuffer strb = new StringBuffer("update stock set gross=?, tare=?, suttle=?, price=?, money=?");
+            java.util.List param = new ArrayList();
+            param.add(tfGross.getText());
+            param.add(tare);
+            param.add(suttle);
+            param.add(tfPrice.getText());
+            param.add(money);
+
+            /**
+             * 新单入库
+             */
+            if (newStock && StringUtils.isNotEmpty(tfTare.getText())){
+
+                strb.append(", in_time=?");
+                param.add(new Date());
             }
 
-            int num = runner.update(sql, values);
+            if (cbxState.getSelectedIndex() > -1 && StringUtils.isNotEmpty(tfTare.getText())){
+                Constants.StockState stockState = (Constants.StockState) cbxState.getSelectedItem();
+                strb.append(", state=?");
+                param.add(stockState.getIndex());
+
+                if (stockState.getIndex() == Constants.StockState.PAID.getIndex()){
+                    strb.append(", pay_time=?");
+                    param.add(new Date());
+                }
+            }
+            strb.append(" where in_no=?");
+            param.add(inNo);
+
+            int num = runner.update(strb.toString(), param.toArray());
             if (num == 1) {
                 dispose();
                 JOptionPane.showMessageDialog(this, "操作成功!", "提示", JOptionPane.INFORMATION_MESSAGE);
@@ -176,6 +208,7 @@ public class StockUpdateDlg extends JDialog {
             tfTare.setText(String.valueOf(stock.getTare()));
             tfSuttle.setText(String.valueOf(stock.getSuttle()));
             tfMoney.setText(String.valueOf(stock.getMoney()));
+            newStock = false;
         }
 
         tfPrice.setText(String.valueOf(stock.getPrice()));
