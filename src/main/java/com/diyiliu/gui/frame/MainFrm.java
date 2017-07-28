@@ -10,6 +10,7 @@ import com.diyiliu.util.Constants;
 import com.diyiliu.util.DbUtil;
 import com.diyiliu.util.UIHelper;
 import org.apache.commons.dbutils.QueryRunner;
+import org.apache.commons.dbutils.handlers.ArrayHandler;
 import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.ScalarHandler;
 import org.apache.commons.lang3.StringUtils;
@@ -49,6 +50,8 @@ public class MainFrm extends JFrame implements ActionListener, KeyListener {
     private JButton btDown;
     private JToolBar toolBar;
     private JButton btPrint;
+    private JLabel lbQuality;
+    private JLabel lbMoney;
     private JTextField tfName;
 
     private StockModel stockModel;
@@ -57,6 +60,8 @@ public class MainFrm extends JFrame implements ActionListener, KeyListener {
 
     public MainFrm() {
         this.setContentPane(plContainer);
+
+        doSum();
 
         lbPaid = new JLabel(new ImageIcon(ClassLoader.getSystemResource("image/approval.png")));
         lbPaid.setToolTipText("结清");
@@ -153,13 +158,12 @@ public class MainFrm extends JFrame implements ActionListener, KeyListener {
         tfName.addKeyListener(new MemberPrompt(cbName, stockModel));
 
         this.setIconImage(new ImageIcon(ClassLoader.getSystemResource("image/主页.png")).getImage());
-        this.setSize(800, 668);
+        this.setSize(800, 679);
         // 设置窗口居中
         UIHelper.setCenter(this);
         this.setResizable(false);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
-        this.requestFocus();
     }
 
 
@@ -210,6 +214,23 @@ public class MainFrm extends JFrame implements ActionListener, KeyListener {
 
     @Override
     public void keyReleased(KeyEvent e) {
+
+    }
+
+    public void doSum(){
+        String sql = "SELECT sum(t.SUTTLE), sum(t.MONEY) FROM stock t";
+
+        try {
+            QueryRunner runner = new QueryRunner(DbUtil.getDataSource());
+            Object[] values = runner.query(sql, new ArrayHandler());
+
+            lbQuality.setText(String.valueOf(values[0]));
+
+            String sm = String.valueOf(values[1]);
+            lbMoney.setText(sm.substring(0, sm.indexOf(".")));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -321,5 +342,7 @@ public class MainFrm extends JFrame implements ActionListener, KeyListener {
 
             stockModel.refresh();
         }
+
+        doSum();
     }
 }

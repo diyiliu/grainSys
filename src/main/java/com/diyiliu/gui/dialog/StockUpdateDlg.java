@@ -85,10 +85,7 @@ public class StockUpdateDlg extends JDialog {
                     int suttle = gross - tare;
                     tfSuttle.setText(String.valueOf(suttle));
 
-                    BigDecimal price = new BigDecimal(tfPrice.getText());
-
-                    BigDecimal result = price.multiply(new BigDecimal(suttle));
-                    double money = result.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+                    double money = calcMoney();
                     // 不显示小数
                     String sMoney = String.valueOf(money);
                     tfMoney.setText(sMoney.substring(0, sMoney.indexOf(".")));
@@ -134,21 +131,8 @@ public class StockUpdateDlg extends JDialog {
             if (StringUtils.isNotBlank(tfTare.getText())) {
                 tare = Integer.valueOf(tfTare.getText());
                 suttle = Integer.valueOf(tfSuttle.getText());
-                money = Double.valueOf(tfMoney.getText());
+                money = calcMoney();
             }
-
-            /*String sql;
-            Object[] values;
-            if (StringUtils.isNotBlank(tfTare.getText()) && cbxState.getSelectedIndex() > -1) {
-                Constants.StockState stockState = (Constants.StockState) cbxState.getSelectedItem();
-                sql = "update stock set gross=?, tare=?, suttle=?, price=?, money=?, state=? where in_no=?";
-                values = new Object[]{tfGross.getText(), tare, suttle,
-                        tfPrice.getText(), money, stockState.getIndex(), inNo};
-            } else {
-                sql = "update stock set gross=?, tare=?, suttle=?, price=?, money=? where in_no=?";
-                values = new Object[]{tfGross.getText(), tare, suttle,
-                        tfPrice.getText(), money, inNo};
-            }*/
 
             StringBuffer strb = new StringBuffer("update stock set gross=?, tare=?, suttle=?, price=?, money=?");
             java.util.List param = new ArrayList();
@@ -235,6 +219,16 @@ public class StockUpdateDlg extends JDialog {
         comboBox.addItem(Constants.StockState.PAID);
 
         comboBox.setSelectedItem(null);
+    }
+
+    public double calcMoney(){
+        BigDecimal suttle = new BigDecimal(tfSuttle.getText());
+        BigDecimal price = new BigDecimal(tfPrice.getText());
+
+        BigDecimal result = price.multiply(suttle);
+        double money = result.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+
+        return  money;
     }
 
     public JTextField getTfName() {

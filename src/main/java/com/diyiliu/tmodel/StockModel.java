@@ -1,11 +1,9 @@
 package com.diyiliu.tmodel;
 
-import com.diyiliu.util.Constants;
 import com.diyiliu.util.DbUtil;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.ArrayListHandler;
 
-import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
 import java.sql.SQLException;
 import java.util.Date;
