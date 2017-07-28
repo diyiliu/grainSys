@@ -163,8 +163,9 @@ public class StockUpdateDlg extends JDialog {
              */
             if (newStock && StringUtils.isNotEmpty(tfTare.getText())){
 
-                strb.append(", in_time=?");
+                strb.append(", in_time=?, state=?");
                 param.add(new Date());
+                param.add(Constants.StockState.WAIT.getIndex());
             }
 
             if (cbxState.getSelectedIndex() > -1 && StringUtils.isNotEmpty(tfTare.getText())){

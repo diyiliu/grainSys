@@ -8,7 +8,7 @@ package com.diyiliu.util;
 public final class Constants {
 
     public enum StockState {
-        DEBT(0, "未支付"), PAID(1, "已结清");
+        DEBT(0, "欠款"), PAID(1, "结清"), UNLOAD(2, "卸货"), WAIT(3, "等待");
 
         StockState(int index, String name) {
             this.index = index;

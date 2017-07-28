@@ -53,7 +53,8 @@ public class MainFrm extends JFrame implements ActionListener, KeyListener {
 
     private StockModel stockModel;
 
-    private JLabel lbPaid, lbDebt;
+    private JLabel lbPaid, lbDebt, lbUnload, lbWait;
+
     public MainFrm() {
         this.setContentPane(plContainer);
 
@@ -62,6 +63,12 @@ public class MainFrm extends JFrame implements ActionListener, KeyListener {
 
         lbDebt = new JLabel(new ImageIcon(ClassLoader.getSystemResource("image/coin-yen.png")));
         lbDebt.setToolTipText("欠款");
+
+        lbUnload = new JLabel(new ImageIcon(ClassLoader.getSystemResource("image/multiple_inputs.png")));
+        lbUnload.setToolTipText("卸货");
+
+        lbWait = new JLabel(new ImageIcon(ClassLoader.getSystemResource("image/serial_tasks.png")));
+        lbWait.setToolTipText("等待");
 
         toolBar.setFloatable(false);
 
@@ -97,14 +104,18 @@ public class MainFrm extends JFrame implements ActionListener, KeyListener {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 
-                if (column == 8){
-                    if(value == null || StringUtils.isEmpty(value.toString())){
+                if (column == 8) {
+                    if (value == null || StringUtils.isEmpty(value.toString())) {
 
                         return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                    }else if (value.equals(Constants.StockState.PAID.getName())){
+                    } else if ((int) value == Constants.StockState.PAID.getIndex()) {
                         return lbPaid;
-                    }else if (value.equals(Constants.StockState.DEBT.getName())) {
+                    } else if ((int) value == Constants.StockState.DEBT.getIndex()) {
                         return lbDebt;
+                    } else if ((int) value == Constants.StockState.UNLOAD.getIndex()) {
+                        return lbUnload;
+                    } else if ((int) value == Constants.StockState.WAIT.getIndex()) {
+                        return lbWait;
                     }
                 }
 
@@ -239,8 +250,8 @@ public class MainFrm extends JFrame implements ActionListener, KeyListener {
                 mid = member.getId();
             }
 
-            String sql = "insert into stock(IN_NO, MEMBER_ID, GROSS, PRICE, CREATE_TIME)values(?, ?, ?, ?, ?)";
-            int result = runner.update(sql, new Object[]{CommonUtil.createID(), mid, gross, price, new Date()});
+            String sql = "insert into stock(IN_NO, MEMBER_ID, GROSS, PRICE, CREATE_TIME, STATE)values(?, ?, ?, ?, ?, ?)";
+            int result = runner.update(sql, new Object[]{CommonUtil.createID(), mid, gross, price, new Date(), Constants.StockState.UNLOAD.getIndex()});
             if (result == 1) {
                 JOptionPane.showMessageDialog(this, "操作成功!", "入库提醒", JOptionPane.INFORMATION_MESSAGE);
 

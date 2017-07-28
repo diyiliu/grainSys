@@ -68,10 +68,10 @@ public class StockModel extends AbstractTableModel {
             return str.substring(0, str.indexOf("."));
         }
 
-        if (columnIndex == 8 && value != null){
+        /*if (columnIndex == 8 && value != null){
 
             return Constants.StockState.getName((Integer) value);
-        }
+        }*/
 
         return value;
     }
