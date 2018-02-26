@@ -20,8 +20,6 @@ public class LoginDialog extends JFrame implements ActionListener {
 
     private JPanel plContain;
     public LoginDialog() {
-        UIHelper.beautify();
-
         lbUsername = new JLabel("用户名 ");
         lbPassword = new JLabel("密  码 ");
 
@@ -80,5 +78,11 @@ public class LoginDialog extends JFrame implements ActionListener {
         if (e.getActionCommand().equals("cancel")){
             this.dispose();
         }
+    }
+
+    public static void main(String[] args) {
+
+        UIHelper.beautify();
+        new LoginDialog();
     }
 }
