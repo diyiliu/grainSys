@@ -3,11 +3,13 @@
     <CLASSES>
       <root url="jar://E:/Local/repo/.gradle/caches/modules-2/files-2.1/commons-dbutils/commons-dbutils/1.6/2912b80af5a30a615d549451de1cf0e00275e49a/commons-dbutils-1.6.jar!/" />
       <root url="jar://E:/Develop/Local/repo/.gradle/caches/modules-2/files-2.1/commons-dbutils/commons-dbutils/1.6/2912b80af5a30a615d549451de1cf0e00275e49a/commons-dbutils-1.6.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/.gradle/caches/modules-2/files-2.1/commons-dbutils/commons-dbutils/1.6/2912b80af5a30a615d549451de1cf0e00275e49a/commons-dbutils-1.6.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
       <root url="jar://E:/Local/repo/.gradle/caches/modules-2/files-2.1/commons-dbutils/commons-dbutils/1.6/af9edcee3c5d115a6a661b30307d74b949827c09/commons-dbutils-1.6-sources.jar!/" />
       <root url="jar://E:/Develop/Local/repo/.gradle/caches/modules-2/files-2.1/commons-dbutils/commons-dbutils/1.6/af9edcee3c5d115a6a661b30307d74b949827c09/commons-dbutils-1.6-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/.gradle/caches/modules-2/files-2.1/commons-dbutils/commons-dbutils/1.6/af9edcee3c5d115a6a661b30307d74b949827c09/commons-dbutils-1.6-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

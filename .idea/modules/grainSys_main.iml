@@ -12,7 +12,7 @@
     <orderEntry type="library" name="Gradle: com.intellij:forms_rt:7.0.3" level="project" />
     <orderEntry type="library" name="Gradle: commons-dbutils:commons-dbutils:1.6" level="project" />
     <orderEntry type="library" name="Gradle: com.alibaba:druid:1.1.0" level="project" />
-    <orderEntry type="library" name="Gradle: mysql:mysql-connector-java:6.0.6" level="project" />
+    <orderEntry type="library" name="Gradle: mysql:mysql-connector-java:5.1.36" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.commons:commons-lang3:3.6" level="project" />
     <orderEntry type="library" name="Gradle: asm:asm-commons:3.0" level="project" />
     <orderEntry type="library" name="Gradle: com.jgoodies:forms:1.1-preview" level="project" />

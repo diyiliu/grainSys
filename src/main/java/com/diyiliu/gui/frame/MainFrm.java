@@ -217,15 +217,17 @@ public class MainFrm extends JFrame implements ActionListener, KeyListener {
 
     }
 
-    public void doSum(){
+    public void doSum() {
         String sql = "SELECT sum(t.SUTTLE), sum(t.MONEY) FROM stock t";
 
         try {
             QueryRunner runner = new QueryRunner(DbUtil.getDataSource());
             Object[] values = runner.query(sql, new ArrayHandler());
+            if (values[0] == null || values[1] == null){
+                return;
+            }
 
             lbQuality.setText(String.valueOf(values[0]));
-
             String sm = String.valueOf(values[1]);
             lbMoney.setText(sm.substring(0, sm.indexOf(".")));
         } catch (SQLException e) {
@@ -264,7 +266,7 @@ public class MainFrm extends JFrame implements ActionListener, KeyListener {
             int index = cbName.getSelectedIndex();
             if (index < 0) {
                 String sql = "insert into member(NAME, TEL, CREATE_TIME) values (?, ?, ?)";
-                BigInteger id = runner.insert(sql, new ScalarHandler<BigInteger>(), new Object[]{name, tel, new Date()});
+                Long id = runner.insert(sql, new ScalarHandler<Long>(), new Object[]{name, tel, new Date()});
                 mid = id.intValue();
             } else {
                 Member member = (Member) cbName.getSelectedItem();
